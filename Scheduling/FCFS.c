@@ -35,8 +35,7 @@ void main()
     }
     for(int i=0;i<n;i++)
     {
-        __fpurge(stdin);
         printf("%d",arrival[i]);
-        gets(p[i]);
+        printf("%s",p[i]);
     }
 }
