@@ -64,12 +64,15 @@ void main()
         sum_wt = sum_wt + p[i].wt;
         sum_tt = sum_tt + p[i].tt;
     }
+    
     //Printing
     printf("| Name | Arrival Time | Burst Time | Waiting Time | Turn Around Time | Completion Time \n");
     for(int i = 0;i<n;i++)
     {
         printf("|%s    |%d             |%d           |%d               |%d               |%d               \n",p[i].name,p[i].arrival,p[i].burst,p[i].wt,p[i].tt,p[i].complete);
     }
+
+    /*
     printf("Gantt Chart");
     for(int i =0;i<n;i++)
     {
@@ -89,4 +92,41 @@ void main()
     }
     printf("Average waiting time = %f",(float)(sum_wt/n));
     printf("Average turnaround time = %f",(float)(sum_tt/n));                                    
+}
+*/
+    printf("GANTT CHART\n");
+    printf("----------------------------------------------------------------------------\n");
+    for(int i=0;i<n;i++)
+    {
+        if(p[i].arrival==0 || p[i].arrival<=p[i-1].complete)
+        {
+            printf("| %s  ",p[i].name);
+        }
+        else
+        {
+            printf("| idle ");
+            printf("| %s  ",p[i].name);
+        }
+    }
+    printf("|");
+    printf("\n");
+    printf("----------------------------------------------------------------------------\n");
+    printf("0");
+    for(int i=0;i<n;i++)
+    {
+        if(p[i].arrival==0)
+        {
+            printf("      %d",p[i].burst);
+        }
+        else if(p[i].arrival<=p[i-1].complete)
+        {
+            printf("      %d",p[i-1].complete+p[i].burst);
+        }
+        else
+        {
+            printf("     %d",p[i].arrival);
+            printf("     %d",p[i].complete);
+        }
+    }    
+    printf("\n");
 }
