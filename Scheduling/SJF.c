@@ -10,8 +10,8 @@ struct Process
     int start;
     int tt;
     int wt;
-    bool in_pb;
-}p[10],temp,pb[10];
+    int in_pb;
+}p[10],temp,pb[10],t;
 
 void main()
 {
@@ -26,7 +26,7 @@ void main()
         scanf("%d",&p[i].arrival);
         printf("\nEnter burst time: ");
         scanf("%d",&p[i].burst);
-        p[i].in_pb=false;
+        p[i].in_pb=0;
     }
     //Sorting according to arrival time
     for(int i = 0;i<n;i++)
@@ -44,23 +44,41 @@ void main()
     }
     //Sorting according to burst time
     int m_bt = 0;
-    for(int i = 0;i<n;i++)
+    int i = 0;
+    while(i < n)
     {
-        if(p[i].arrival<=m_bt && p[i].in_pb==false)
+        if(m_bt >= p[i].arrival)
         {
-            pb[i] = p[i];
-              for(int j = 0;j<n;j++)
+            int j = 0;
+            while(j<n)
             {
-                if( (p[j].burst < p[i].burst) && (p[j].in_pb==false))
+                if(m_bt >= p[j].arrival)
                 {
-                    pb[i] = p[j];
+                    if(p[j].in_pb == 0 && p[j].burst < p[i].burst)
+                    {
+                        t = p[i];
+                        p[i] = p[j];
+                        p[j] = t;
+                    }
                 }
+                else
+                {
+                    break;
+                }
+                j++;
             }
+            
+            m_bt = m_bt + p[i].burst;
+            p[i].in_pb = 1;
+
+            i++;
         }
-        printf("Hello");
-        p[i].in_pb = true;
-        m_bt = m_bt + p[i].burst;
+        else
+        {
+            m_bt = p[i].arrival;
+        }
     }
+    
 
     //Find completion time and start of each process
     int m = 0;
@@ -94,27 +112,42 @@ void main()
     {
         printf("|%s    |%d             |%d           |%d               |%d               |%d               \n",p[i].name,p[i].arrival,p[i].burst,p[i].wt,p[i].tt,p[i].complete);
     }
-    printf("Gantt Chart");
-    for(int i =0;i<n;i++)
+    printf("GANTT CHART\n");
+    printf("----------------------------------------------------------------------------\n");
+    for(int i=0;i<n;i++)
     {
-        printf("|%s",p[i].name);
-        for(int j = 0;j<p[i].complete;j++)
+        if(p[i].arrival==0 || p[i].arrival<=p[i-1].complete)
         {
-            if(j == p[i].start)
-            {
-                printf("|%d-",p[i].start);
-            }
-            else
-            {
-                printf("-");
-            }
+            printf("| %s  ",p[i].name);
         }
-        printf("-%d|",p[i].complete);
+        else
+        {
+            printf("| idle ");
+            printf("| %s  ",p[i].name);
+        }
     }
-    printf("Average waiting time = %f",(float)(sum_wt/n));
-    printf("Average turnaround time = %f",(float)(sum_tt/n));
-    for(int i = 0;i<n;i++)
+    printf("|");
+    printf("\n");
+    printf("----------------------------------------------------------------------------\n");
+    printf("0");
+    for(int i=0;i<n;i++)
     {
-        printf("%s",pb[i].name);
-    }                                    
+        if(p[i].arrival==0)
+        {
+            printf("      %d",p[i].burst);
+        }
+        else if(p[i].arrival<=p[i-1].complete)
+        {
+            printf("      %d",p[i-1].complete+p[i].burst);
+        }
+        else
+        {
+            printf("     %d",p[i].arrival);
+            printf("     %d",p[i].complete);
+        }
+    }
+    printf("\n Average waiting time = %f",(float)(sum_wt/n));
+    printf("\n Average turnaround time = %f",(float)(sum_tt/n));
+
+    
 }
