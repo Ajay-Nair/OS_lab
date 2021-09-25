@@ -71,29 +71,7 @@ void main()
     {
         printf("|%s    |%d             |%d           |%d               |%d               |%d               \n",p[i].name,p[i].arrival,p[i].burst,p[i].wt,p[i].tt,p[i].complete);
     }
-
-    /*
-    printf("Gantt Chart");
-    for(int i =0;i<n;i++)
-    {
-        printf("|%s",p[i].name);
-        for(int j = 0;j<p[i].complete;j++)
-        {
-            if(j == p[i].start)
-            {
-                printf("|%d-",p[i].start);
-            }
-            else
-            {
-                printf("-");
-            }
-        }
-        printf("-%d|",p[i].complete);
-    }
-    printf("Average waiting time = %f",(float)(sum_wt/n));
-    printf("Average turnaround time = %f",(float)(sum_tt/n));                                    
-}
-*/
+    
     printf("GANTT CHART\n");
     printf("----------------------------------------------------------------------------\n");
     for(int i=0;i<n;i++)
@@ -129,4 +107,6 @@ void main()
         }
     }    
     printf("\n");
+    printf("Average waiting time = %f",(float)(sum_wt/n));
+    printf("Average turnaround time = %f",(float)(sum_tt/n));  
 }
